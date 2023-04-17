@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Image Editor</title>
+  <style>
+    img {
+      max-width: 100%;
+      max-height: 50%;
+    }
+  </style>
+</head>
+<body>
+  <div>
+    <button id="zoomIn">Zoom In</button>
+    <button id="zoomOut">Zoom Out</button>
+    <button id="save">Save Image</button>
+  </div>
+  <div>
+    <img id="image" src="Hungha.jpg">
+  </div>
+  <script>
+    let zoomLevel = 1;
+    const zoomStep = 0.1;
+    const image = document.getElementById("image");
+    const zoomInBtn = document.getElementById("zoomIn");
+    const zoomOutBtn = document.getElementById("zoomOut");
+    const saveBtn = document.getElementById("save");
+    
+    zoomInBtn.addEventListener("click", () => {
+      zoomLevel += zoomStep;
+      image.style.transform = `scale(${zoomLevel})`;
+    });
+    
+    zoomOutBtn.addEventListener("click", () => {
+      zoomLevel -= zoomStep;
+      image.style.transform = `scale(${zoomLevel})`;
+    });
+    
+    saveBtn.addEventListener("click", () => {
+      const canvas = document.createElement("canvas");
+      canvas.width = image.naturalWidth * zoomLevel;
+      canvas.height = image.naturalHeight * zoomLevel;
+      const ctx = canvas.getContext("2d");
+      ctx.drawImage(image, 0, 0, canvas.width, canvas.height);
+      const dataURL = canvas.toDataURL("image/png");
+      const link = document.createElement("a");
+      link.href = dataURL;
+      link.download = "image.png";
+      link.click();
+    });
+  </script>
+</body>
+</html>
